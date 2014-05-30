@@ -1,6 +1,6 @@
 # Cached::Singleton
 
-TODO: Write a gem description
+It allows you to create a singleton from an active record
 
 ## Installation
 
