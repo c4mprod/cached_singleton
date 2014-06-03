@@ -1,4 +1,4 @@
-require "cached_singleton/version"
+require 'cached_singleton/version'
 
 module CachedSingleton
   @@cache_strategy = nil
@@ -33,7 +33,8 @@ module CachedSingleton
 
           # Get it in from the DB or create it
           transaction do
-            # We ensure no other process is trying to SELECT and INSERT the same record by locking the entire table (read and write) during the transaction
+            # We ensure no other process is trying to SELECT OR INSERT the same record by locking
+            # the entire table (read + write) during the transaction
             connection.execute("LOCK TABLE #{table_name} IN EXCLUSIVE MODE")
             m = first || create
           end

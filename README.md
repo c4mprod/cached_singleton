@@ -1,6 +1,6 @@
 # Cached::Singleton
 
-It allows you to create a singleton from an active record
+CachedSingleton makes a single instance ActiveRecord object behave fully like a singleton.
 
 ## Installation
 
@@ -18,7 +18,14 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+### Rails 3 apps
+
+1. Create an initializer defining your cache strategy (by default we recommend):  
+```ruby
+CachedSingleton.default_cache_strategy = Rails.cache
+```
+2. Include the module CachedSingleton in the ActiveModels you want to become singletons
+3. Done!
 
 ## Contributing
 

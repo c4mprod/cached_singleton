@@ -8,8 +8,10 @@ Gem::Specification.new do |spec|
   spec.version       = CachedSingleton::VERSION
   spec.authors       = ['Thibault El Zamek, Cédric Darné, Lionel Oto']
   spec.email         = ['thibault.elzamek@c4mprod.com, cedric.darne@c4mprod.com, lionel.oto@c4mprod.com']
-  spec.description   = %q{It allows you to create a singleton from an active record}
-  spec.summary       = %q{It allows you to create a singleton from an active record}
+  spec.description   = <<-EOF
+    CachedSingleton makes a single instance ActiveRecord object behave fully like a singleton.
+  EOF
+  spec.summary       = %q{Makes an active record behave like a singleton}
   spec.homepage      = 'https://github.com/c4mprod/cached_singleton'
   spec.license       = 'MIT'
 
