@@ -44,6 +44,10 @@ module CachedSingleton
 
           m
         end
+
+        def remove_from_cache
+          cache.delete(singleton_cache_key)
+        end
       end
 
       after_commit :expire_cache
@@ -51,6 +55,6 @@ module CachedSingleton
   end
 
   def expire_cache
-    self.class.cache.delete(self.class.singleton_cache_key) if (!new_record? || destroyed?)
+    self.class.remove_from_cache if (!new_record? || destroyed?)
   end
 end
