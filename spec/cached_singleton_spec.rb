@@ -1,7 +1,6 @@
 lib = File.expand_path('../../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 
-require 'rack/test'
 require 'minitest/autorun'
 require 'cached_singleton'
 
@@ -30,6 +29,14 @@ class FakeModel
     'table_name'
   end
 
+  def new_record?
+    false
+  end
+
+  def destroyed?
+    false
+  end
+
   include CachedSingleton
 end
 
@@ -52,7 +59,6 @@ class FakeCache
 end
 
 class CachedSingletonTest < MiniTest::Unit::TestCase
-  include Rack::Test::Methods
 
   def test_singleton_cache_key
     assert_equal FakeModel.singleton_cache_key, '/FakeModel'
@@ -73,8 +79,17 @@ class CachedSingletonTest < MiniTest::Unit::TestCase
   def test_single_instance_from_db
     CachedSingleton.default_cache_strategy = FakeCache
     FakeModel.stub :first, FakeModel.new do
-        assert_same FakeModel.instance, FakeModel.instance
+      assert_same FakeModel.instance, FakeModel.instance
     end
   end
 
+  def test_expire_cache
+    cache = Minitest::Mock.new
+    model = FakeModel.new
+    cache.expect :read, model, [FakeModel.singleton_cache_key]
+    cache.expect :delete, nil, [FakeModel.singleton_cache_key]
+    CachedSingleton.default_cache_strategy = cache
+    FakeModel.instance.expire_cache
+    cache.verify
+  end
 end
